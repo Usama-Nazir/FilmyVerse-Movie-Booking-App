@@ -10,39 +10,37 @@ function Review({id, prevRating, userRated}) {
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState("");
-  const sendReview = async()=>{
+  const sendReview = async () => {
     setLoading(true);
     try {
-      await addDoc(reviewsRef,{
-        movieid: id,
-        name: "awesome",
-        rating: rating,
-        thought: form,
-        timestamp: new Date().getTime
-      })
-      const ref = doc(db, "Movies", id);
-      await updateDoc(ref, {
-          rating: prevRating + rating,
-          rated: userRated + 1
-      })
-      setRating(0);
-      setForm("");
-      swal({
-        title: "Review Send",
-        icon: "success",
-        buttons: Done,
-        timer: 3000
-      })
+      
+        await addDoc(reviewsRef, {
+            movieid: id,
+            rating: rating,
+            thought: form,
+            timestamp: new Date().getTime()
+        })
+        setRating(0);
+        setForm("");
+        // setNewAdded(newAdded + 1);
+        swal({
+            title: "Review Sent",
+            icon: "success",
+            buttons: false,
+            timer: 3000
+          })
+   
     } catch (error) {
-      swal({
-        title: "error.message",
-        icon: "Error",
-        buttons: false,
-        timer: 3000
-      })
+        swal({
+            title: error.message,
+            icon: "error",
+            buttons: false,
+            timer: 3000
+          })
     }
     setLoading(false);
-  }
+}
+
   return (
     <>
       <div className="mt-4 border-t-2 border-gray-700 w-full ">
